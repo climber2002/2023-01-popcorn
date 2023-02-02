@@ -107,3 +107,5 @@ dist
 out/
 cache/
 .env
+
+test/reports

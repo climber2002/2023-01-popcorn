@@ -13,6 +13,8 @@ contract TemplateRegistryTest is Test {
 
   address nonOwner = address(0x666);
   bytes32 templateCategory = "templateCategory";
+
+
   bytes32 templateId = "ClonableWithInitData";
   string metadataCid = "cid";
 
@@ -170,6 +172,18 @@ contract TemplateRegistryTest is Test {
     registry.toggleTemplateEndorsement(templateCategory, templateId);
 
     Template memory template = registry.getTemplate(templateCategory, templateId);
+    assertTrue(template.endorsed);
+  }
+
+  function testFail__toggleTemplateEndorsement_wrongTemplateCategory() public {
+    bytes32 templateCategory2 = "templateCategory2";
+    registry.addTemplateCategory(templateCategory2);
+    ClonableWithInitData clonableWithInitData = new ClonableWithInitData();
+    addTemplate(address(clonableWithInitData));
+
+    registry.toggleTemplateEndorsement(templateCategory2, templateId);
+
+    Template memory template = registry.getTemplate(templateCategory2, templateId);
     assertTrue(template.endorsed);
   }
 
